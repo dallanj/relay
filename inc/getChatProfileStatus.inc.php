@@ -6,6 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 
     // Grab post data
     $chatUid = $_POST['chat_userid'];
+    $type = $_POST['type'];
     $uid = $_SESSION['UID'];
 
     // Instantiate Get Chat Profile Status controller class
@@ -15,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     include '../app/controllers/getChatProfileStatus-contr.classes.php';
     
     // Create new getChatProfileStatus object
-    $getChatProfileStatus = new GetChatProfileStatusContr($chatUid, $uid);
+    $getChatProfileStatus = new GetChatProfileStatusContr($chatUid, $uid, $type);
 
     // Running error handlers and getChatProfileStatus
     $getChatProfileStatus->getChatProfileStatusUser();

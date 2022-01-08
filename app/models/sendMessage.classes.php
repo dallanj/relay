@@ -1,17 +1,39 @@
 <?php
 class SendMessage extends Dbh {
 
-	protected function insertMessage($msg, $senderId, $receiverId) { // login the user
+	protected function insertMessage($msg, $senderId, $receiverId, $type, $groupid) { // login the user
 
+		//if group
+		// for each receiver id explode to array
+		// for each usser i
 		// get both user's public keys
+
+		
 		$senderPubKey = $this->getPublicKey($senderId);
-		$receiverPubKey = $this->getPublicKey($receiverId);
 
 		// initiate array for both user's keys
 		$keyArray = [];
 
-		// push both user's public keys to keyArray
-		array_push($keyArray, $receiverPubKey, $senderPubKey);
+		// push sender public key to key array
+		array_push($keyArray, $senderPubKey);
+
+		// if group chat explode list of receiver ids to array
+		if($type == 1) {
+			$receiverIdArray = explode(',',$receiverId);
+
+			// iterate through the array of receiver id's
+			foreach($receiverIdArray as $id) {
+				// fetch each receiver id public key and store to array
+				array_push($keyArray,$this->getPublicKey($id));
+			}
+			$_SESSION['boom'] = array($keyArray,$receiverPubKeyArray);
+		} else {
+			// if not a group chat than grab one public key
+			$receiverPubKey = $this->getPublicKey($receiverId);
+
+			// push both user's public keys to keyArray
+			array_push($keyArray, $receiverPubKey);
+		}
 
 		// initiate array for both user's packets for later use
 		$packets = [];
@@ -42,10 +64,10 @@ class SendMessage extends Dbh {
 		$message = OpenPGP::enarmor($encrypted->to_bytes(), "PGP MESSAGE");
 
 		// prepare statement for inserting encrypted message to database
-		$stmt = $this->connect()->prepare('INSERT INTO messages (sender_id, receiver_id, message) VALUES (?, ?, ?);'); // connect to database
+		$stmt = $this->connect()->prepare('INSERT INTO messages (sender_id, receiver_id, message, type, groupid) VALUES (?, ?, ?, ?, ?);'); // connect to database
 
 		// execute prepare statement (insert encrypted message to the database)
-		if(!$stmt->execute(array($senderId, $receiverId, $message))) 
+		if(!$stmt->execute(array($senderId, $receiverId, $message, $type, $groupid))) 
 		{
 			$stmt = null;
 			$alert['message'] = 'Error! The server is having trouble connecting to the database';

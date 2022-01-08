@@ -5,20 +5,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
 
     // Grab post data
+    $groupid = $_POST['groupid'];
     $uid = $_SESSION['UID'];
-    $chatUid = $_POST['chat_uid'];
 
     // Instantiate Add Friend controller class
     include '../app/core/dbh.classes.php';
 
-    include '../app/models/changeReadStatus.classes.php';
-    include '../app/controllers/changeReadStatus-contr.classes.php';
+    include '../app/models/leaveGroupchat.classes.php';
+    include '../app/controllers/leaveGroupchat-contr.classes.php';
     
-    // Create new changeReadStatus object
-    $changeReadStatus = new ChangeReadStatusContr($uid, $chatUid);
+    // Create new message object
+    $leaveGroupchat = new LeaveGroupchatContr($groupid, $uid);
 
-    // Running error handlers and changeReadStatus
-    $changeReadStatus->changeReadStatusUser();
+    // Running error handlers and user registration
+    $leaveGroupchat->leaveGroupchatUser();
 
 } 
 else

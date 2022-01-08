@@ -1,21 +1,37 @@
 <?php
 class GetChatMessages extends Dbh {
 
-	protected function getChatMessages($senderId, $receiverId, $username) {
+	protected function getChatMessages($senderId, $receiverId, $username, $type) {
 
 		// fetch all messages using user ids of either the sender or receiver
-		$stmt = $this->connect()->prepare('SELECT * FROM messages WHERE (sender_id=? AND receiver_id=?) OR (sender_id=? AND receiver_id=?);'); // connect to database
-
-		// if prepared statement can't connect to the database
-		if(!$stmt->execute(array($senderId, $receiverId, $receiverId, $senderId))) 
-		{
-			$stmt = null;
-			$alert['message'] = 'Error! The server is having trouble connecting to the database';
-        	$alert['type'] = 'error';
-			echo json_encode($alert);
-			exit();
+		if($type == 0) {
+			$stmt = $this->connect()->prepare('SELECT * FROM messages WHERE (sender_id=? AND receiver_id=?) OR (sender_id=? AND receiver_id=?);'); // connect to database
+		} else {
+			$stmt = $this->connect()->prepare('SELECT * FROM messages WHERE groupid = ?;'); // connect to database
 		}
-
+		
+//if groupchat instead of receiver id use groupid
+		// if prepared statement can't connect to the database
+		if($type == 0) {
+			if(!$stmt->execute(array($senderId, $receiverId, $receiverId, $senderId))) 
+			{
+				$stmt = null;
+				$alert['message'] = 'Error! The server is having trouble connecting to the database';
+				$alert['type'] = 'error';
+				echo json_encode($alert);
+				exit();
+			}
+		} else {
+			if(!$stmt->execute(array($receiverId))) 
+			{
+				$stmt = null;
+				$alert['message'] = 'Error! The server is having trouble connecting to the database';
+				$alert['type'] = 'error';
+				echo json_encode($alert);
+				exit();
+			}
+		}
+		
 		// store message results in $user
 		$user = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -54,6 +70,7 @@ class GetChatMessages extends Dbh {
 			$data['messages'][$user[$i]['id']]['sessionUser'] = $_SESSION['USERNAME'];
 			$data['messages'][$user[$i]['id']]['messageUid'] = $senderInfo[1];
 			$data['messages'][$user[$i]['id']]['messageUser'] = $senderInfo[0];
+			$data['messages'][$user[$i]['id']]['date'] = $user[$i]['timestamp'];
 			
 			if($senderInfo[3] == 1) {
 			    $data['messages'][$user[$i]['id']]['messagePic'] = $senderInfo[1].'_'.$senderInfo[0].'.jpg';

@@ -4,7 +4,7 @@ This class is for Google recaptcha v3 info
 */
 
 // Build POST request:
-$recaptcha_url = '';
+$recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
 $recaptcha_secret = '';
 $recaptcha_response = $_POST['recaptcha_response'];
 

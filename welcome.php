@@ -20,7 +20,7 @@ if($_SESSION['loggedin'] == 1 && $_SESSION['first_login'] == 0) {
 				<div class="login-form">
 					Welcome, <?php echo $_SESSION['USERNAME']; ?>
 
-					<p>Thank you for choosing to use liveChat. This project was made by Dallan. Click <a href="https://dallan.ca">here</a> to view my portfolio for other projects</p>
+					<p>Thank you for choosing to use Relay. This project was made by Dallan Jones. <a href="https://dallan.ca">Click here</a> to view my portfolio for other projects</p>
 					<form action="inc/welcomeScreen.inc.php" method="post">
 						<input type="submit" name="submit" class="submit" value="Okay!">
 						

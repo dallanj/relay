@@ -4,11 +4,15 @@ class SendMessageContr extends SendMessage {
 	private $msg;
 	private $senderId;
 	private $receiverId;
+	private $type;
+	private $groupid;
 
-	public function __construct($msg, $senderId, $receiverId) {
+	public function __construct($msg, $senderId, $receiverId, $type, $groupid) {
 		$this->msg = $msg;
 		$this->senderId = $senderId;
 		$this->receiverId = $receiverId;
+		$this->type = $type;
+		$this->groupid = $groupid;
 	}
 
 	public function sendMessageUser() {
@@ -28,7 +32,7 @@ class SendMessageContr extends SendMessage {
 		}
 		
 		// if there are no errors -> call insertMessage function
-		$this->insertMessage($this->msg, $this->senderId, $this->receiverId);
+		$this->insertMessage($this->msg, $this->senderId, $this->receiverId, $this->type, $this->groupid);
 	}
 
 	private function emptyInput() {

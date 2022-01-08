@@ -9,7 +9,7 @@ class UpdatePassword extends Dbh {
 		// encrypt the password by hashing
 		$hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
 
-		// Insert user
+		// Update password
 		$stmt = $this->connect()->prepare('UPDATE users SET password = ? WHERE id = ?;'); // connect to database
 		if(!$stmt->execute(array($hashedPwd, $uid))) {
 			$stmt = null;

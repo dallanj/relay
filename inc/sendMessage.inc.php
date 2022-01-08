@@ -6,8 +6,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 
     // Grab post data
     $msg = $_POST['msg'];
-    $senderId = $_POST['sender_id'];
+    $senderId = $_SESSION['UID'];
     $receiverId = $_POST['receiver_id'];
+    // $groupid = $_POST['groupid'];
+    empty($_POST['groupid']) ? $groupid = null : $groupid = $_POST['groupid'];
+    $type = $_POST['type'];
+    // $_SESSION['booms'] = array($msg,$senderId,$receiverId,$type,$groupid);
 
     // Instantiate Login controller class
     include '../app/core/dbh.classes.php';
@@ -25,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     include '../app/controllers/sendMessage-contr.classes.php';
     
     // Create new message object
-    $sendMessage = new SendMessageContr($msg, $senderId, $receiverId);
+    $sendMessage = new SendMessageContr($msg, $senderId, $receiverId, $type, $groupid);
 
     // Running error handlers and user registration
     $sendMessage->sendMessageUser();

@@ -6,19 +6,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 
     // Grab post data
     $uid = $_SESSION['UID'];
-    $chatUid = $_POST['chat_uid'];
+    $receiver = $_POST['uid'];
 
     // Instantiate Add Friend controller class
     include '../app/core/dbh.classes.php';
 
-    include '../app/models/changeReadStatus.classes.php';
-    include '../app/controllers/changeReadStatus-contr.classes.php';
+    include '../app/models/cancelFriendRequest.classes.php';
+    include '../app/controllers/cancelFriendRequest-contr.classes.php';
     
-    // Create new changeReadStatus object
-    $changeReadStatus = new ChangeReadStatusContr($uid, $chatUid);
+    // Create new message object
+    $cancelFriendRequest = new CancelFriendRequestContr($uid, $receiver);
 
-    // Running error handlers and changeReadStatus
-    $changeReadStatus->changeReadStatusUser();
+    // Running error handlers and user registration
+    $cancelFriendRequest->cancelFriendRequestUser();
 
 } 
 else

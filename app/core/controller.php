@@ -1,20 +1,6 @@
 <?php
 
 // Class Controller
-// {
-//     public function view($path,$data = [])
-//     {
-//         if(file_exists("../app/views/" . $path . ".php"))
-//         {
-//             include "../app/views/" . $path . ".php";
-//         } 
-//         else 
-//         {
-//             include "../app/views/404.php";
-//         }
-//     }
-// }
-
 
 class Controller {  
      public $model;   
@@ -48,8 +34,6 @@ class Controller {
           }
           else
           { 
-               // show the requested book 
-               //   $book = $this->model->getBook($_GET['register']); 
                include './app/views/login.php';  
           }  
      }  

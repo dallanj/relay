@@ -1,13 +1,4 @@
 <?php
-/*
-    this trait is used whenever the user interacts with the website
-    the user's last activity timestamp is updated which is then verified using
-    fetchData to change their activity status to online
-
-
-NOT USING THIS TRAIT SINCE I NEED DB INTERACTION AND PERMISSION
-
-	*/
 
 trait UpdateLastActivity{
 

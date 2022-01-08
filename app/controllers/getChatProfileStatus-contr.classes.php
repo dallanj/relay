@@ -3,10 +3,12 @@ class GetChatProfileStatusContr extends GetChatProfileStatus {
 
 	private $chatUid;
 	private $uid;
+	private $type;
 
-	public function __construct($chatUid, $uid) {
+	public function __construct($chatUid, $uid, $type) {
 		$this->chatUid = $chatUid;
 		$this->uid = $uid;
+		$this->type = $type;
 	}
 
 	public function getChatProfileStatusUser() {
@@ -27,7 +29,7 @@ class GetChatProfileStatusContr extends GetChatProfileStatus {
 		}
 		
 		// if there are no errors -> call getChatProfileStatus function
-		$this->getChatProfileStatus($this->chatUid, $this->uid);
+		$this->getChatProfileStatus($this->chatUid, $this->uid, $this->type);
 	}
 
 	// check if receiver username is empty

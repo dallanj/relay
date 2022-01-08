@@ -47,9 +47,9 @@ a { text-decoration: none; color:inherit; }
 	flex-direction: row;
 	align-items:center;
 }
-.friendInfo: {
-	border-radius: 10px;
-	background: #383c42;
+.friendInfo {
+	/* border-radius: 10px; */
+	/* background: #383c42; */
 }
 .friendInfo > div:first-child {
 	border-radius: 50%;
@@ -59,6 +59,8 @@ a { text-decoration: none; color:inherit; }
 .friendInfo > div:first-child img {
 	border-radius: 50%;
 	width:40px;
+	height:40px;
+	object-fit: cover;
 }
 .friendInfo > div:last-child {
 	flex:1;
@@ -67,7 +69,7 @@ a { text-decoration: none; color:inherit; }
 	text-align: left;
 	position: relative;
 }
-.start_chat, .topNav button {
+.start_chat, .startGroupChat, .topNav button, .groupchatIcons > button, .groupAdminPageButton {
 	background: none;
 	color: inherit;
 	border: none;
@@ -77,12 +79,66 @@ a { text-decoration: none; color:inherit; }
 	outline: inherit;
 }
 
-.start_chat {
+.start_chat, .startGroupChat {
 	width: 100%;
+}
+.friendListSubcategory {
+	padding:.5em;
+	font-weight: bold;
+	margin-top: .5em;
+	position: relative;
+}
+/* find public group chat modal */
+.publicGroupchats {
+	max-height:350px;
+	overflow-y: auto;
+}
+.publicGroupchatContainer {
+	padding:1em;
+	position:relative;
+}
+.publicGroupchatJoin {
+		background: #9445ED;
+		border-radius: 5px;
+		width:15%;
+		border:none;
+		height:30px;
+		font-size: 1rem;
+		color: #dcddde;
+		top:50%;
+		right:1em;
+		transform: translateY(-50%);
+		position: absolute;
+}
+.publicGroupchatContainer:nth-of-type(odd) {
+	background:#ddd;
+	border-radius:10px;
+}
+.publicGroupchatTitle {
+	color:#333;
+	font-size:1rem;
+	width:80%;
+}
+.publicGroupchatDesc {
+	color:#999;
+	font-size:.9rem;
+	width:80%;
+}
+.publicGroupchatDetails {
+	color:#999;
+	font-size:.75rem;
+	width:80%;
+}
+
+.groupchatIcons {
+	position:absolute;
+	right:.75em;
+	top:50%;
+	transform: translateY(-50%);
 }
 .msgCount {
 	background:#f2412b;
-  color:#fff;
+  	color:#fff;
 	padding: .125em .5em;
 	border-radius: 50%;
 	opacity: .75;
@@ -171,6 +227,13 @@ a { text-decoration: none; color:inherit; }
 	margin-left:auto;
 }
 
+.bubbleInfoRight {
+	text-align: right;
+}
+.bubbleInfoLeft {
+	margin-left:8px;
+}
+
 .bubble { flex: 1 1 auto; clear: both;} /* clear the floats here on parent */
 .bubble p {
     border-radius: 5px;
@@ -201,10 +264,13 @@ a { text-decoration: none; color:inherit; }
 	display:flex;
 /*	align-items:center;*/
 	width: 100%;
+	position: relative;
 }
 .bubbleContainer > div:first-child img {
 	border-radius:50%;
 	width:30px;
+	height:30px;
+	object-fit: cover;
 }
 .bubbleContainer:first-of-type .bubble p {
 	margin: 0 .75em .75em .75em;
@@ -213,7 +279,16 @@ a { text-decoration: none; color:inherit; }
 	margin: 0
 }
 .bubbleContainer > div img {
-	margin-top: .5em;
+	/* margin-top: .5em; */
+	position: absolute;
+	top:50%;
+	transform: translateY(-50%);
+}
+.left {
+	margin-left:2em;
+}
+.bubbleDate {
+	font-size: .5rem;
 }
 
 
@@ -374,7 +449,7 @@ div > p {
   left: 50%;
   transition: 0.3s;
   margin-top: 1em;
-  z-index: 100;
+  z-index: 600;
   animation: slideInFromTop .5s linear 0s 1 normal forwards;
 	opacity: 0;
 
@@ -435,8 +510,12 @@ div > p {
   color:#fff;
 }
 .info {
-  background:#BDE5F8;
+  background:#2C99F2;
   color:#fff;
+}
+.warning {
+	background-color: #F2872C;
+	color:#fff;
 }
 
 
@@ -559,13 +638,13 @@ button {
 .topNav > button {
 
 }
-.topNav > button {
+.topNav > button, .groupchatIcons > button, .groupAdminPageButton {
 	cursor:pointer;
 	font-size:1rem;
 	color:#8d9297;
 	padding: .5em;
 }
-.topNav > button:hover {
+.topNav > button:hover, .addGroupchatIcon:hover, .joinPublicGroupchatIcon:hover, .groupAdminPageButton:hover {
 	background:#383c42;
 	border-radius: 5px;
 }
@@ -577,6 +656,139 @@ button {
 	max-width: 100%;
 	display: none;
 	flex-direction: column;
+}
+/* groupchat page session styling */
+.groupchatPageContainer, .groupchatAdminContainer {
+	color: #8d9297;
+	flex:1;
+	max-width: 100%;
+	display: none;
+	flex-direction: column;
+}
+.adminMemberListContainer {
+	display: flex;
+	flex-flow: column nowrap;
+	font-size: .8rem;
+	margin: 0.5rem;
+	line-height: 1.5;
+	border-bottom:1px solid #41454a;
+	flex: 1 1 auto;
+}
+.th {
+	display: none;
+	font-weight: 700;
+	/* background-color: #f2f2f2; */
+  }
+  
+  .th > .td {
+	white-space: normal;
+	justify-content: center;
+  }
+  .th > .td:nth-child(2) {
+	justify-content: left;
+  }
+  
+  .tr {
+	width: 100%;
+	display: flex;
+	flex-flow: row nowrap;
+  }
+  
+  .tr:nth-of-type(even) {
+	/* background-color: #f2f2f2; */
+  }
+  
+  .tr:nth-of-type(odd) {
+	/* background-color: #ffffff; */
+  }
+  
+  .td {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	flex-grow: 1;
+	flex-basis: 0;
+	padding: 0.5em;
+	word-break: break-word;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-width: 0px;
+	white-space: nowrap;
+	border-bottom:1px solid #41454a;
+  }
+.memberListContainer {
+}
+.memberListItem {
+	padding:1em 0;
+	display:flex;
+	align-items: center;
+	border-bottom:1px solid #41454a;
+	position: relative;
+}
+
+.memberListItemButton {
+	background: #9445ED;
+	border-radius: 5px;
+	border:none;
+	font-size: .9rem;
+	color: #dcddde;
+	position:absolute;
+	right:0;
+	padding:.5em 1em;
+	/* transform: translateX(50%); */
+}
+.adminMemberListItemButton {
+	background: #9445ED;
+	border-radius: 5px;
+	border:none;
+	font-size: .9rem;
+	color: #dcddde;
+	padding:.5em 1em;	
+}
+.memberListItemAction {
+	background: #9445ED;
+	border-radius: 5px;
+	border:none;
+	font-size: .9rem;
+	color: #dcddde;
+	padding:.5em 1em;
+}
+.memberListButtonContainer {
+	position: absolute;
+	right:0;
+}
+p.isAdmin {
+	color:#9445ED;
+}
+
+.greenButton {
+	background-color:#31a563;
+}
+.blueButton {
+	background-color:#4569ec;
+}
+.blueButton {
+	background-color:#4569ec;
+}
+.redButton {
+	background-color: #EC466A;
+}
+
+.memberListItem > img, .td > img {
+	border-radius:50%;
+	width:40px;
+	height:40px;
+	object-fit: cover;
+	margin:0;
+}
+.memberListItem > p {
+	margin:0;
+	margin-left:1em;
+	font-size: 1rem;
+}
+.td > p {
+	margin:0;
+	font-size: 1rem;
 }
 
 #profileStatus {
@@ -606,3 +818,123 @@ button {
 #accountSettings {
 	width: 100%;
 }
+
+/* modal styling */
+.modalOverlay {
+	width:100%;
+	height:100%;
+	background:rgba(0,0,0,.5);
+	position:fixed;
+	top:0;
+	left:0;
+	display: none;
+	z-index: 500;
+}
+.modalContainer {
+	width:400px;
+	height:50vh;
+	min-height: 300px;	
+	position: fixed;
+	top:50%;
+	left:50%;
+	transform: translate(-50%,-50%);
+	display: none;
+	z-index: 501;
+}
+.modal {
+	background:#eee;
+	width:100%;
+	border-radius: 10px;
+	padding:1em;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.modalTitle {
+	/* background:blue; */
+	position:relative;
+	width:100%;
+	color:#333;
+	font-size:1.75rem;
+	text-align: center;
+}
+.modalSubtitle {
+	color:#999;
+	text-align: center;
+	margin-bottom:1.5em;
+}
+.modalClose {
+	position:absolute;
+	cursor: pointer;
+	right:0em;
+	font-size: 1.5rem;
+	top:50%;
+	background-color: transparent;
+	border:none;
+	transform: translateY(-50%);
+}
+.modalFormLabel {
+	width:100%;
+	text-align: left;
+	margin-bottom:.5em;
+	color:#999;
+}
+.modalFormInput {
+	width:100%;
+	margin:.5em 0 1em 0em;
+	padding:1em;
+	border-radius: 5px;
+	border:none;
+	background-color: #fff;
+}
+.modalSubmit {
+	background: #9445ED;
+	border-radius: 5px;
+	width:50%;
+	border:none;
+	height:50px;
+	font-size: 1rem;
+	margin:1.5em 0;
+	color: #dcddde;
+	transform: translateX(50%);
+}
+/* ajax loading icon */
+.lds-ring {
+	display: inline-block;
+	position: relative;
+	width:100%;
+	margin-bottom: 4em;
+  }
+  .lds-ring div {
+	box-sizing: border-box;
+	display: block;
+	/* position: absolute; */
+	position: absolute;
+	left:25%;
+	transform: translateX(-25%);
+	text-align: center;
+	width: 64px;
+	height: 64px;
+
+	margin: 8px;
+	border: 8px solid #666;
+	border-radius: 50%;
+	animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+	border-color: #666 transparent transparent transparent;
+  }
+  .lds-ring div:nth-child(1) {
+	animation-delay: -0.45s;
+  }
+  .lds-ring div:nth-child(2) {
+	animation-delay: -0.3s;
+  }
+  .lds-ring div:nth-child(3) {
+	animation-delay: -0.15s;
+  }
+  @keyframes lds-ring {
+	0% {
+	  transform: rotate(0deg);
+	}
+	100% {
+	  transform: rotate(360deg);
+	}
+  }
+  

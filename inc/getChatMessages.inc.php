@@ -5,9 +5,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
 
     // Grab post data
-    $senderId = $_POST['sender_id'];
+    $senderId = $_SESSION['UID'];
     $receiverId = $_POST['receiver_id'];
     $username = $_SESSION['USERNAME'];
+    $type = $_POST['type'];
+
+    $_SESSION['getchatmsg'] = array($senderId,$receiverId,$username,$type);
 
     // Instantiate getChatMessages controller class
     include '../app/core/dbh.classes.php';
@@ -24,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     include '../app/controllers/getChatMessages-contr.classes.php';
     
     // Create new message object
-    $getChatMessages = new GetChatMessagesContr($senderId, $receiverId, $username);
+    $getChatMessages = new GetChatMessagesContr($senderId, $receiverId, $username, $type);
 
     // Running error handlers and user registration
     $getChatMessages->getChatMessagesUser();

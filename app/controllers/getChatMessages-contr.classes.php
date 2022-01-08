@@ -4,11 +4,13 @@ class GetChatMessagesContr extends GetChatMessages {
 	private $senderId;
 	private $receiverId;
 	private $username;
+	private $type;
 
-	public function __construct($senderId, $receiverId, $username) {
+	public function __construct($senderId, $receiverId, $username, $type) {
 		$this->senderId = $senderId;
 		$this->receiverId = $receiverId;
 		$this->username = $username;
+		$this->type = $type;
 	}
 
 	public function getChatMessagesUser() {
@@ -21,7 +23,7 @@ class GetChatMessagesContr extends GetChatMessages {
 		}
 		
 		// if there are no errors -> call insertMessage function
-		$this->getChatMessages($this->senderId, $this->receiverId, $this->username);
+		$this->getChatMessages($this->senderId, $this->receiverId, $this->username, $this->type);
 	}
 
 	private function emptyIds() {

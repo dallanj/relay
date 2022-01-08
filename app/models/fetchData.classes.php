@@ -19,6 +19,9 @@ class FetchData extends Dbh {
 		// destructure user's friends to array
 		$friends = explode(',', $user['friends']);
 
+		// destructure user's groupchats to array
+		$groupchats = explode(',', $user['groupchats']);
+
 		// set user's info to data variable to return
 		$data['account']['id'] = $user['id'];
 		$data['account']['username'] = $user['username'];
@@ -102,6 +105,7 @@ class FetchData extends Dbh {
 			$data['friends'][$friend]['online_status'] = $friendInfo['online_status'];
 			$data['friends'][$friend]['active_now'] = $activeNow;
 			$data['friends'][$friend]['status_color'] = $statusColor;
+			$data['friends'][$friend]['type'] = 0;
 			
 			if($friendInfo['profile_pic'] == 1) {
     		    $data['friends'][$friend]['profilePic'] = $friendInfo['id'].'_'.$friendInfo['username'].'.jpg';
@@ -136,6 +140,56 @@ class FetchData extends Dbh {
 			$data['requests'][$friendRequest['id']]['receiver_id'] = $friendRequest['receiver_id'];
 			$_SESSION['requests'] = $data['requests'];
 		} 
+
+		// remove any null friend's on list
+		for($i = 0 ; $i <= count($friends) ; $i++) {
+			if(!$friends[$i]) {
+				unset($friends[$i]);
+			}
+		}	
+
+		// iterate through user's groupchat list to set data to be returned
+		foreach($groupchats as $groupchat) {
+
+			// get groupchat's info
+			$groupchatInfo = $this->getGroupchatInfo($groupchat);
+			
+			if($groupchat) {
+				// set groupchats's info to data variable to return
+				$data['groupchats'][$groupchat]['id'] = $groupchatInfo['id'];
+				$data['groupchats'][$groupchat]['name'] = $groupchatInfo['name'];
+				$data['groupchats'][$groupchat]['members'] = $groupchatInfo['members'];
+				// 1 represents group chat, this will be used to determine if the chat session is a group or not
+				$data['groupchats'][$groupchat]['type'] = 1;
+			}
+		
+		}
+
+		
+
+		$publicGroupchats = $this->getPublicGroupchats();
+
+		// remove any null friend's on list
+		for($i = 0 ; $i <= count($publicGroupchats) ; $i++) {
+			if(!$publicGroupchats[$i]) {
+				unset($publicGroupchats[$i]);
+			}
+		}	
+
+		foreach($publicGroupchats as $publicGroupchat) {
+
+			// count group members
+			$memberCount = explode(',',$publicGroupchat['members']);
+			$memberCount = count($memberCount);
+			
+			$data['publicGroupchats'][$publicGroupchat['id']]['id'] = $publicGroupchat['id'];
+			$data['publicGroupchats'][$publicGroupchat['id']]['name'] = $publicGroupchat['name'];
+			$data['publicGroupchats'][$publicGroupchat['id']]['desc'] = $publicGroupchat['description'];
+			$data['publicGroupchats'][$publicGroupchat['id']]['members'] = $publicGroupchat['members'];
+			$data['publicGroupchats'][$publicGroupchat['id']]['memberCount'] = $memberCount;
+
+
+		}
 		
 		// return the data
 		echo json_encode($data);
@@ -220,6 +274,58 @@ class FetchData extends Dbh {
 
 		// return user's friend's list	
 		return $friendRequests;
+
+	}
+
+	// fetch groupchats's info
+	private function getGroupchatInfo($id) {
+
+		// prepare statement
+		$stmt = $this->connect()->prepare('SELECT * FROM groupchat WHERE id = ?;'); // connect to database
+
+		// if prepared statement can't connect to the database
+		if(!$stmt->execute(array($id))) 
+		{
+			$stmt = null;
+			$alert['message'] = 'Error! The server is having trouble connecting to the database';
+        	$alert['type'] = 'error';
+			echo json_encode($alert);
+			exit();
+		}
+		
+		// fetch user's info
+		if(!$groupchat = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+			return null;		
+		}
+		
+		// return user's info
+		return $groupchat[0];
+
+	}
+
+	// fetch all public group chats
+	private function getPublicGroupchats() {
+
+		// prepare statement
+		$stmt = $this->connect()->prepare('SELECT * FROM groupchat WHERE type = ?;'); // connect to database
+
+		// if prepared statement can't connect to the database
+		if(!$stmt->execute(array(1))) 
+		{
+			$stmt = null;
+			$alert['message'] = 'Error! The server is having trouble connecting to the database';
+        	$alert['type'] = 'error';
+			echo json_encode($alert);
+			exit();
+		}
+		
+		// fetch user's info
+		if(!$groupchats = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+			return null;		
+		}
+
+		// return user's info
+		return $groupchats;
 
 	}
 
