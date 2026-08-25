@@ -69,7 +69,6 @@ class VerifyLogin extends Dbh {
 		}
 		else // if password matches
 		{
-            // $stmt = null;
 			$stmt = $this->connect()->prepare('SELECT * FROM users WHERE email = ?;'); // connect to database
 			if(!$stmt->execute(array($email))) 
 			{

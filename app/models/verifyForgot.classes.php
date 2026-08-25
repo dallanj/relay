@@ -40,7 +40,6 @@ class VerifyForgot extends Dbh {
 		}
 		else // if password matches
 		{
-            // $stmt = null;
 			$stmt = $this->connect()->prepare('SELECT * FROM users WHERE username = ? OR email = ?;'); // connect to database
 			if(!$stmt->execute(array($email, $email))) 
 			{
