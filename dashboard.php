@@ -9,9 +9,6 @@ if($_SESSION['loggedin'] == 1 && $_SESSION['first_login'] == 1) {
   	header("Location: welcome.php");
 }
 
-// testing purposes
-// echo 'PHP version: ' . phpversion();
-// echo '<pre>'; print_r($_SESSION); echo '</pre>';
 ?>
 
 

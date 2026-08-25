@@ -1,6 +1,9 @@
 <?php
 include('inc/db.php');
 include('inc/authenticator.php'); // check if user has login cookies
+
+require_once __DIR__ . '/config.php';
+$recaptchaConfig = app_config()['recaptcha'];
 ?>
 
 <!-- <!DOCTYPE html> -->
@@ -18,15 +21,17 @@ include('inc/authenticator.php'); // check if user has login cookies
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    	<?php if ($recaptchaConfig['enabled'] && $recaptchaConfig['site_key']): ?>
     	<!-- Google recaptcha v3 -->
-    	<script src="https://www.google.com/recaptcha/api.js?render=6LdpFMAcAAAAANScjPW6DRncxew5RKSk7-TU9J9o"></script>
+    	<script src="https://www.google.com/recaptcha/api.js?render=<?php echo htmlspecialchars($recaptchaConfig['site_key']); ?>"></script>
 	    <script>
 	        grecaptcha.ready(function () {
-	            grecaptcha.execute('6LdpFMAcAAAAANScjPW6DRncxew5RKSk7-TU9J9o', { action: 'contact' }).then(function (token) {
+	            grecaptcha.execute('<?php echo htmlspecialchars($recaptchaConfig['site_key']); ?>', { action: 'contact' }).then(function (token) {
 	                var recaptchaResponse = document.getElementById('recaptchaResponse');
 	                recaptchaResponse.value = token;
 	            });
 	        });
 	    </script>
- 
+	    <?php endif; ?>
+
 	</head>

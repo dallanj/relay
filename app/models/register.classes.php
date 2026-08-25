@@ -5,7 +5,7 @@ class Register extends Dbh {
 	protected function pgpKeys($username, $email, $pwd) {
 
 		// Key name and email
-		$uid = $username+' <'+$email+'>';
+		$uid = $username . ' <' . $email . '>';
 
 		$rsa = new \phpseclib\Crypt\RSA();
 		$k = $rsa->createKey(512);

@@ -1,15 +1,8 @@
 <?php
 
-// Class Controller
+class Controller {
+     public $model;
 
-class Controller {  
-     public $model;   
-     
-     public function __construct()    
-     {    
-          //  $this->model = new Model();  
-     }   
-          
      public function invoke()  
      {  
           if (isset($_GET['register']))  

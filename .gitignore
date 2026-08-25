@@ -1,0 +1,11 @@
+# Local environment / secrets — never commit real credentials
+.env
+
+# OS/editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+
+# Dependencies (restore with `composer install`)
+/vendor/
+/vendor_pgp/

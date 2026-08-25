@@ -38,8 +38,6 @@ header("Pragma: no-cache");
 			<p class="formTitle">Profile photo</p>
 			
 			<?php
-			// I need to update this whole page
-			
                 $sql = "SELECT * FROM users WHERE id=?";
                 $stmt = mysqli_stmt_init($conn);
                 

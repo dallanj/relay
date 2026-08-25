@@ -20,7 +20,6 @@ $(document).ready(function(){
         
         updateChatProfileStatus();
         initChangeReadStatus();
-        //updateLastActivity();
      }, 1000);
 
     // function to make first character uppercase
@@ -46,7 +45,6 @@ $(document).ready(function(){
             // friendRequest:vfriendRequest //msg being sent
         },
         function(response,status){
-            // var response = JSON.parse(response);
         });
         
     }
@@ -183,7 +181,6 @@ $(document).ready(function(){
 
                     var vsender_id = $("#sender_id").val();
                     var vresponse = response;
-                    //var vdecline = response;
                     var alert = '';
 
                     $.post("./inc/friendRequest.inc.php", // url of the page on server
@@ -277,7 +274,6 @@ $(document).ready(function(){
                                 </div>
                             `)
                         });
-                        // $('#groupchatSessionContainer').html('groupchatPageContainer');
                     } else {
                         $('#groupchatSessionContainer').html('');
                     }
@@ -662,7 +658,6 @@ $(document).ready(function(){
                         $('.groupchatAdminContainer').css('display','none');
                         initGroupchatPage(object);
 
-                        // changeReadStatus(object[0]['id'],object[1]['id']);
 
                     })
                     
@@ -842,7 +837,6 @@ function fetchGroupchatInfo(groupid) {
                 
                 object = encodeURIComponent(JSON.stringify(object));
                 let username = v.username;
-                // username = encodeURIComponent(JSON.stringify(v.username));
 
                 // check if you are admin and create admin settings button
                 if(v.isAdmin === 1 && usersUid === v.id) {
@@ -925,7 +919,6 @@ function fetchGroupchatInfo(groupid) {
                 let uid = $(this).data('object');
 
                 // console.log(uid)
-                // cancelFriendRequest(uid);
                 });
 
                 // Submit a friend request via post function, returns data 
@@ -971,11 +964,8 @@ function fetchGroupchatInfo(groupid) {
                 $('.groupchatAdminContainer').css('display','flex');
                 $('.chatContainer').css('display','none');
 
-                // var object = $(this).data('objects');
-                // object = JSON.parse(decodeURIComponent(object));
                 // console.log('admin ', object)
 
-                // var groupid = objects['profile'].id;
 
                 var groupchatAdminPage = `
                 <div class="top_of_chat padding">
@@ -1078,7 +1068,6 @@ function fetchGroupchatInfo(groupid) {
                     let objRank;
                     let objBan;
                     let objKick;
-                    // username = encodeURIComponent(JSON.stringify(v.username));
                     
                     // check if user is admin
                     v.isAdmin === 1 ? memberUsername = `<p class="isAdmin">${v.username}</p>` : memberUsername = `<p>${v.username}</p>`;

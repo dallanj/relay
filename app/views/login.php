@@ -1,7 +1,6 @@
 <?php
 session_start();
 include('head.php');
-include './classes/alerts.php';
 
 if($_SESSION['loggedin'] == 1 && $_SESSION['first_login'] == 0) {
 	header("Location: dashboard.php");
