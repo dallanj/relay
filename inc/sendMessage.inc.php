@@ -8,10 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $msg = $_POST['msg'];
     $senderId = $_SESSION['UID'];
     $receiverId = $_POST['receiver_id'];
-    // $groupid = $_POST['groupid'];
     empty($_POST['groupid']) ? $groupid = null : $groupid = $_POST['groupid'];
     $type = $_POST['type'];
-    // $_SESSION['booms'] = array($msg,$senderId,$receiverId,$type,$groupid);
 
     // Instantiate Login controller class
     include '../app/core/dbh.classes.php';
@@ -24,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     require_once '../lib/openpgp_crypt_rsa.php';
     require_once '../lib/openpgp_crypt_symmetric.php';
 
-    // include '../app/core/updateLastActivity.classes.php';
     include '../app/models/sendMessage.classes.php';
     include '../app/controllers/sendMessage-contr.classes.php';
     
