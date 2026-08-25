@@ -1,18 +1,22 @@
 <?php
-// Database handler
+// Database handler (PDO) — used by model classes that extend Dbh.
 class Dbh {
 
-	protected function connect() { // to use this class, set it to protected and you must extend
+	protected function connect()
+	{
 		try {
-			$host = '';
-			$username = '';
-			$password = '';
-			$dbname = '';
-			$dbh = new PDO('mysql:host='.$host.';dbname='.$dbname, $username, $password);
+			require_once __DIR__ . '/../../config.php';
+			$db = app_config()['db'];
+			$dbh = new PDO(
+				'mysql:host=' . $db['host'] . ';dbname=' . $db['database'],
+				$db['username'],
+				$db['password']
+			);
+			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			return $dbh;
 		}
 		catch (PDOException $e) {
-			$_SESSION['error'] = 'Error! '. $e->getMessage();
+			$_SESSION['error'] = 'Error! ' . $e->getMessage();
 			header('location: ../index.php');
 			die();
 		}
